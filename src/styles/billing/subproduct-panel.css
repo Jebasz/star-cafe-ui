@@ -1,0 +1,31 @@
+.subproduct-panel {
+    margin-bottom: 12px;
+}
+
+.subproduct-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.subproduct-btn {
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--accent);
+    transition: all 0.25s ease;
+}
+
+.subproduct-btn:hover {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+
+.subproduct-btn.active {
+    background: var(--accent-gradient);
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    transform: scale(1.08);
+}

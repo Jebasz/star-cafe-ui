@@ -1,0 +1,32 @@
+.admin-dashboard {
+    background: var(--bg-primary);
+    min-height: 100vh;
+    color: var(--text-primary);
+}
+
+.dashboard-filter label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.dashboard-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: var(--card-shadow);
+    text-align: center;
+}
+
+.dashboard-card h6 {
+    color: var(--text-secondary);
+}
+
+.dashboard-card h3 {
+    color: var(--text-primary);
+}
+
+.dashboard-icon {
+    color: var(--accent);
+}

@@ -1,0 +1,26 @@
+.about-page {
+    background: var(--bg-primary);
+    min-height: 100vh;
+    color: var(--text-primary);
+}
+
+.about-container {
+    padding: 60px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-title {
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.about-text {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.about-section-title {
+    margin-top: 40px;
+    color: var(--accent);
+}

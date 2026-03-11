@@ -1,0 +1,24 @@
+:root {
+
+    --bg-primary: #f4f6fb;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+
+    --border-color: rgba(0, 0, 0, 0.1);
+
+    --text-primary: #111111;
+    --text-secondary: #666666;
+
+    --accent: #2563eb;
+    --accent-gradient: linear-gradient(135deg, #3b82f6, #2563eb);
+
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* APPLY THEME */
+
+html,
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}

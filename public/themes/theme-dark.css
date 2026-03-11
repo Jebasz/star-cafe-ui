@@ -1,0 +1,41 @@
+:root {
+
+    --bg-primary: #0f0f12;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --border-color: rgba(255, 157, 60, 0.25);
+    --input-bg: #1a1a1a;
+
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+
+    --accent: #ff9d3c;
+    --accent-gradient: linear-gradient(135deg, #ff9d3c, #ff7b00);
+
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+
+}
+
+/* FORCE THEME */
+
+html,
+body {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    min-height: 100%;
+}
+
+/* COMMON COMPONENTS */
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+}
+
+input,
+select,
+textarea {
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
