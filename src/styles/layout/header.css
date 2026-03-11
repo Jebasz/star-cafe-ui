@@ -1,0 +1,95 @@
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: var(--header-bg);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 220px;
+}
+
+.header-logo {
+    height: 50px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 8px var(--accent));
+}
+
+.header-title {
+    margin: 0;
+    font-weight: bold;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+}
+
+.header-spacer {
+    width: 180px;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-link.active {
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.user-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card-bg);
+    padding: 6px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.user-icon {
+    color: var(--accent);
+}
+
+.user-name {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.user-role {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-primary);
+}
+
+.user-role.admin {
+    background: var(--accent-gradient);
+    color: white;
+}
+
+.logout-btn {
+    background: var(--accent-gradient);
+    border: none;
+    color: white;
+    border-radius: 10px;
+    padding: 6px 14px;
+    cursor: pointer;
+}

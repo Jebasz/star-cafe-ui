@@ -1,0 +1,178 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+
+    z-index: 3000;
+}
+
+.modal-container {
+    width: 380px;
+    padding: 35px;
+
+    border-radius: 20px;
+    background: var(--card-bg);
+    backdrop-filter: blur(18px);
+
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+
+    text-align: center;
+
+    animation: fadeInScale 0.25s ease;
+}
+
+.modal-icon-wrapper {
+    margin-bottom: 12px;
+}
+
+.modal-icon {
+    font-size: 42px;
+}
+
+.modal-icon.success {
+    color: var(--success-color);
+}
+
+.modal-icon.error {
+    color: var(--danger-color);
+}
+
+.modal-icon.warning {
+    color: var(--accent);
+}
+
+.modal-title {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.modal-message {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+/* PRINT BUTTON */
+
+.modal-print-btn {
+    width: 100%;
+    padding: 10px;
+
+    margin-bottom: 12px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--accent);
+    background: transparent;
+
+    color: var(--accent);
+    font-weight: 600;
+
+    transition: all 0.25s ease;
+}
+
+.modal-print-btn:hover {
+    background: var(--accent-gradient);
+    color: white;
+}
+
+/* DISABLED PRINT BUTTON */
+
+.modal-print-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* CANCEL BUTTON */
+
+.modal-ok-btn {
+    width: 100%;
+    padding: 12px;
+
+    border-radius: 12px;
+
+    border: none;
+
+    background: var(--accent-gradient);
+    color: white;
+
+    font-weight: 600;
+
+    transition: all 0.25s ease;
+}
+
+.modal-ok-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* SPLIT PAYMENT INPUT */
+
+.modal-container input {
+    width: 100%;
+    padding: 10px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border-color);
+
+    background: var(--input-bg);
+    color: var(--text-primary);
+
+    margin-top: 10px;
+}
+
+.modal-container input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* SPLIT PAYMENT CONFIRM BUTTON */
+
+.modal-container button {
+    width: 100%;
+    padding: 12px;
+
+    margin-top: 15px;
+
+    border-radius: 12px;
+
+    border: none;
+
+    background: var(--accent-gradient);
+    color: white;
+
+    font-weight: 600;
+
+    transition: all 0.25s ease;
+}
+
+.modal-container button:hover {
+    transform: translateY(-1px);
+}
+
+/* ANIMATION */
+
+@keyframes fadeInScale {
+
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}

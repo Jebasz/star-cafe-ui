@@ -1,0 +1,53 @@
+.billing-page {
+    background: var(--bg-primary);
+    min-height: 100vh;
+    color: var(--text-primary);
+}
+
+.billing-row {
+    height: 85vh;
+}
+
+.billing-panel {
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    box-shadow: var(--card-shadow);
+}
+
+/* PRODUCT LIST SCROLL */
+
+.product-scroll {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-top: 15px;
+
+    scrollbar-width: thin;
+}
+
+/* SCROLLBAR FOR CHROME */
+
+.product-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.product-scroll::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.product-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}

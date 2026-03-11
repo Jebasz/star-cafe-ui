@@ -1,0 +1,19 @@
+.filter-config {
+    max-width: 420px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+}
+
+.filter-config h5 {
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.filter-config select {
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
