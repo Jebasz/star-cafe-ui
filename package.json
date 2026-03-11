@@ -21,10 +21,7 @@
     "vite": "^7.3.1"
   },
   "dependencies": {
-<<<<<<< HEAD
     "axios": "^1.13.6",
-=======
->>>>>>> f8b1a41ee45d7287fc1bccdb9d1baa9aca7c9188
     "bootstrap": "^5.3.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
