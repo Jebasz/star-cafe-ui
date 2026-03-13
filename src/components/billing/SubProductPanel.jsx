@@ -6,7 +6,8 @@ function SubProductPanel({
     shopId,
     category,
     selectedSubProduct,
-    onSubProductSelect
+    onSubProductSelect,
+    resetSignal
 }) {
 
     const [subProducts, setSubProducts] = useState([]);
@@ -21,6 +22,12 @@ function SubProductPanel({
         loadSubProducts();
 
     }, [category]);
+
+    /* RESET HANDLER */
+    useEffect(() => {
+        // parent controls selection so nothing to clear
+        // but ensures UI refresh when reset happens
+    }, [resetSignal]);
 
     const loadSubProducts = async () => {
 

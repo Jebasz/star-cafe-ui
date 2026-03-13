@@ -16,7 +16,6 @@ import "../styles/billing/BillingPage.css";
 
 function BillingPage() {
 
-
 const printRef = useRef();
 
 const [selectedCategory, setSelectedCategory] = useState(null);
@@ -79,8 +78,11 @@ const loadShopConfig = async () => {
 const handleCategorySelect = (category) => {
 
     setSelectedCategory(category);
+
     setSelectedPrice(null);
     setSelectedSubProduct(null);
+
+    setResetSignal(prev => prev + 1);
 
 };
 
@@ -263,6 +265,7 @@ const handlePrint = async () => {
             setSelectedPrice(null);
             setSelectedSubProduct(null);
             setPendingBillPayload(null);
+
             setResetSignal(prev => prev + 1);
 
             setModal({ ...modal, show: false });
@@ -298,9 +301,9 @@ return (
 
                 <div className="col-2 billing-panel">
                     <CategoryPanel
-    onCategorySelect={handleCategorySelect}
-    resetSignal={resetSignal}
-/>
+                        onCategorySelect={handleCategorySelect}
+                        resetSignal={resetSignal}
+                    />
                 </div>
 
                 <div className="col-7 billing-panel">
@@ -308,6 +311,7 @@ return (
                     {configLoaded &&
                      selectedCategory?.id !== "search" &&
                      selectedCategory?.id !== "favourites" && (
+
                         <div className="mb-4">
 
                             <FilterPanel
@@ -320,6 +324,8 @@ return (
 
                                 selectedSubProduct={selectedSubProduct}
                                 onSubProductSelect={setSelectedSubProduct}
+
+                                resetSignal={resetSignal}
                             />
 
                         </div>
@@ -334,6 +340,7 @@ return (
                             subProduct={selectedSubProduct}
                             filterType={filterType}
                             onProductSelect={addToCart}
+                            resetSignal={resetSignal}
                         />
 
                     </div>

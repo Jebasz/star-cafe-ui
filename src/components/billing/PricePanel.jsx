@@ -5,7 +5,8 @@ import "../../styles/billing/price-panel.css";
 function PricePanel({
     shopId,
     selectedPrice,
-    onPriceSelect
+    onPriceSelect,
+    resetSignal
 }) {
 
     const [prices, setPrices] = useState([]);
@@ -15,6 +16,12 @@ function PricePanel({
             loadPrices();
         }
     }, [shopId]);
+
+    /* RESET HANDLER */
+    useEffect(() => {
+        // nothing to clear because selection comes from parent
+        // but this forces re-render when reset happens
+    }, [resetSignal]);
 
     const loadPrices = async () => {
 

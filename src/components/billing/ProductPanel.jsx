@@ -12,8 +12,9 @@ function ProductPanel({
     price,
     subProduct,
     filterType,
-    onProductSelect
-}) {
+    onProductSelect,
+    resetSignal
+}){
 
     const [products, setProducts] = useState([]);
     const [favourites, setFavourites] = useState([]);
@@ -40,14 +41,15 @@ function ProductPanel({
 
     useEffect(() => {
 
-        if (!category) {
-            setProducts([]);
-            return;
-        }
+    if (!category) {
+        setProducts([]);
+        setFavourites([]);
+        return;
+    }
 
-        loadProducts();
+    loadProducts();
 
-    }, [shopId, category, price, subProduct, filterType]);
+}, [shopId, category, price, subProduct, filterType, resetSignal]);
 
     const loadProducts = async () => {
 

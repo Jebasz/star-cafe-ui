@@ -11,7 +11,9 @@ function FilterPanel({
     onPriceSelect,
 
     selectedSubProduct,
-    onSubProductSelect
+    onSubProductSelect,
+
+    resetSignal
 
 }) {
 
@@ -22,6 +24,7 @@ function FilterPanel({
                 category={category}
                 selectedSubProduct={selectedSubProduct}
                 onSubProductSelect={onSubProductSelect}
+                resetSignal={resetSignal}
             />
         );
     }
@@ -31,6 +34,7 @@ function FilterPanel({
             shopId={shopId}
             selectedPrice={selectedPrice}
             onPriceSelect={onPriceSelect}
+            resetSignal={resetSignal}
         />
     );
 

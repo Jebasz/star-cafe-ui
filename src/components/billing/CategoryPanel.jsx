@@ -12,7 +12,7 @@ import {
 
 import "../../styles/billing/category-panel.css";
 
-function CategoryPanel({ onCategorySelect }) {
+function CategoryPanel({ onCategorySelect, resetSignal }) {
 
     const [categories, setCategories] = useState([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -21,6 +21,12 @@ function CategoryPanel({ onCategorySelect }) {
     useEffect(() => {
         loadCategories();
     }, []);
+
+    /* RESET HANDLER */
+    useEffect(() => {
+        setSelectedCategoryId(null);
+        setSearchKeyword("");
+    }, [resetSignal]);
 
     const loadCategories = async () => {
 
