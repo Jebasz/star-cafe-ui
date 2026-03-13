@@ -51,70 +51,70 @@ function ProductPanel({
 
     const loadProducts = async () => {
 
-        try {
+    try {
 
-            setLoading(true);
+        setLoading(true);
 
-            const allProducts = await getAllProducts();
+        const allProducts = await getAllProducts();
 
-            let filtered = [...allProducts];
+        let filtered = [...allProducts];
 
-            if (category?.id === "favourites") {
+        if (category?.id === "favourites") {
 
-                const fav = filtered.filter(p => p.favourite);
-                setFavourites(fav);
-                return;
-
-            }
-
-            if (category?.id === "search") {
-
-                const keyword =
-                    category.keyword?.toLowerCase() || "";
-
-                filtered = filtered.filter(p =>
-                    p.name.toLowerCase().includes(keyword)
-                );
-
-                setProducts(filtered);
-                return;
-
-            }
-
-            filtered = filtered.filter(p =>
-                p.category?.id === category.id
-            );
-
-            if (filterType === "SUB_PRODUCT" && subProduct) {
-
-                filtered = filtered.filter(p =>
-                    p.subProduct?.id === subProduct.id
-                );
-
-            }
-
-            if (filterType === "PRICE" && price) {
-
-                filtered = filtered.filter(p =>
-                    p.price >= price.minPrice &&
-                    p.price <= price.maxPrice
-                );
-
-            }
-
-            setProducts(filtered);
-
-        } catch (error) {
-
-            console.error("Product Load Error:", error);
-
-        } finally {
-
-            setLoading(false);
+            const fav = filtered.filter(p => p.favourite);
+            setFavourites(fav);
+            return;
 
         }
 
-    };
+        if (category?.id === "search") {
+
+            const keyword =
+                category.keyword?.toLowerCase() || "";
+
+            filtered = filtered.filter(p =>
+                p.name.toLowerCase().includes(keyword)
+            );
+
+            setProducts(filtered);
+            return;
+
+        }
+
+        filtered = filtered.filter(p =>
+            Number(p.categoryId) === Number(category.id)
+        );
+
+        if (filterType === "SUB_PRODUCT" && subProduct) {
+
+            filtered = filtered.filter(p =>
+                Number(p.subProductId) === Number(subProduct.id)
+            );
+
+        }
+
+        if (filterType === "PRICE" && price) {
+
+            filtered = filtered.filter(p =>
+                p.price >= price.minPrice &&
+                p.price <= price.maxPrice
+            );
+
+        }
+
+        setProducts(filtered);
+
+    } catch (error) {
+
+        console.error("Product Load Error:", error);
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+};
 
     const handleToggleFavourite = async (e, productId) => {
 
