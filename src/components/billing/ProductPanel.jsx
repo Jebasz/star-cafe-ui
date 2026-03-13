@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-    getProducts,
-    getFavouriteProducts,
-    toggleFavourite,
-    searchProducts,
-    getProductsBySubProduct
-} from "../../services/productService";
+import API from "../../services/api";
+import { toggleFavourite } from "../../services/productService";
 
 import { FaPlus, FaCoffee } from "react-icons/fa";
 
@@ -24,6 +19,25 @@ function ProductPanel({
     const [favourites, setFavourites] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    const getAllProducts = async () => {
+
+        const cacheKey = `allProducts_${shopId}`;
+        const cached = localStorage.getItem(cacheKey);
+
+        if (cached) {
+            return JSON.parse(cached);
+        }
+
+        const response = await API.get(`/products/shop/${shopId}/all`);
+
+        localStorage.setItem(
+            cacheKey,
+            JSON.stringify(response.data)
+        );
+
+        return response.data;
+    };
+
     useEffect(() => {
 
         if (!category) {
@@ -31,36 +45,7 @@ function ProductPanel({
             return;
         }
 
-        if (category.id === "favourites") {
-            loadFavourites();
-            return;
-        }
-
-        if (category.id === "search") {
-            loadSearchProducts();
-            return;
-        }
-
-        if (filterType === "SUB_PRODUCT") {
-
-            if (subProduct) {
-                loadSubProductProducts();
-            } else {
-                setProducts([]);
-            }
-
-            return;
-        }
-
-        if (filterType === "PRICE") {
-
-            if (price) {
-                loadProducts();
-            } else {
-                setProducts([]);
-            }
-
-        }
+        loadProducts();
 
     }, [shopId, category, price, subProduct, filterType]);
 
@@ -70,95 +55,58 @@ function ProductPanel({
 
             setLoading(true);
 
-            const response = await getProducts(
-                shopId,
-                category.id,
-                price.minPrice,
-                price.maxPrice
+            const allProducts = await getAllProducts();
+
+            let filtered = [...allProducts];
+
+            if (category?.id === "favourites") {
+
+                const fav = filtered.filter(p => p.favourite);
+                setFavourites(fav);
+                return;
+
+            }
+
+            if (category?.id === "search") {
+
+                const keyword =
+                    category.keyword?.toLowerCase() || "";
+
+                filtered = filtered.filter(p =>
+                    p.name.toLowerCase().includes(keyword)
+                );
+
+                setProducts(filtered);
+                return;
+
+            }
+
+            filtered = filtered.filter(p =>
+                p.category?.id === category.id
             );
 
-            setProducts(response.data);
+            if (filterType === "SUB_PRODUCT" && subProduct) {
+
+                filtered = filtered.filter(p =>
+                    p.subProduct?.id === subProduct.id
+                );
+
+            }
+
+            if (filterType === "PRICE" && price) {
+
+                filtered = filtered.filter(p =>
+                    p.price >= price.minPrice &&
+                    p.price <= price.maxPrice
+                );
+
+            }
+
+            setProducts(filtered);
 
         } catch (error) {
 
             console.error("Product Load Error:", error);
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
-
-    const loadSubProductProducts = async () => {
-
-        try {
-
-            setLoading(true);
-
-            const response = await getProductsBySubProduct(
-                shopId,
-                subProduct.id
-            );
-
-            setProducts(response.data);
-
-        } catch (error) {
-
-            console.error("SubProduct Load Error:", error);
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
-
-    const loadSearchProducts = async () => {
-
-        if (!category?.keyword || category.keyword.trim() === "") {
-            setProducts([]);
-            return;
-        }
-
-        try {
-
-            setLoading(true);
-
-            const response = await searchProducts(
-                shopId,
-                category.keyword
-            );
-
-            setProducts(response.data);
-
-        } catch (error) {
-
-            console.error("Search Error:", error);
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
-
-    const loadFavourites = async () => {
-
-        try {
-
-            setLoading(true);
-
-            const response = await getFavouriteProducts(shopId);
-
-            setFavourites(response.data);
-
-        } catch (error) {
-
-            console.error("Favourite Load Error:", error);
 
         } finally {
 
@@ -174,15 +122,21 @@ function ProductPanel({
 
         await toggleFavourite(productId);
 
-        if (category?.id === "favourites") {
-            loadFavourites();
-        } else if (category?.id === "search") {
-            loadSearchProducts();
-        } else if (filterType === "SUB_PRODUCT") {
-            loadSubProductProducts();
-        } else {
-            loadProducts();
-        }
+        const cacheKey = `allProducts_${shopId}`;
+        const cached = JSON.parse(localStorage.getItem(cacheKey)) || [];
+
+        const updated = cached.map(p =>
+            p.id === productId
+                ? { ...p, favourite: !p.favourite }
+                : p
+        );
+
+        localStorage.setItem(
+            cacheKey,
+            JSON.stringify(updated)
+        );
+
+        loadProducts();
 
     };
 
