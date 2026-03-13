@@ -17,8 +17,22 @@ function PricePanel({
     }, [shopId]);
 
     const loadPrices = async () => {
+
+        const cacheKey = `priceFilters_${shopId}`;
+        const cachedPrices = localStorage.getItem(cacheKey);
+
+        if (cachedPrices) {
+            setPrices(JSON.parse(cachedPrices));
+            return;
+        }
+
         const response = await getPriceFilters(shopId);
         setPrices(response.data);
+
+        localStorage.setItem(
+            cacheKey,
+            JSON.stringify(response.data)
+        );
     };
 
     return (

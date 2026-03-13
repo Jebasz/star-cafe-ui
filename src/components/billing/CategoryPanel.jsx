@@ -23,8 +23,21 @@ function CategoryPanel({ onCategorySelect }) {
     }, []);
 
     const loadCategories = async () => {
+
+        const cachedCategories = localStorage.getItem("categories");
+
+        if (cachedCategories) {
+            setCategories(JSON.parse(cachedCategories));
+            return;
+        }
+
         const response = await getCategories();
         setCategories(response.data);
+
+        localStorage.setItem(
+            "categories",
+            JSON.stringify(response.data)
+        );
     };
 
     const getCategoryIcon = (name) => {

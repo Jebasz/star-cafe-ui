@@ -24,6 +24,14 @@ function SubProductPanel({
 
     const loadSubProducts = async () => {
 
+        const cacheKey = `subProducts_${shopId}_${category.id}`;
+        const cachedSubProducts = localStorage.getItem(cacheKey);
+
+        if (cachedSubProducts) {
+            setSubProducts(JSON.parse(cachedSubProducts));
+            return;
+        }
+
         try {
 
             const response = await getSubProducts(
@@ -32,6 +40,11 @@ function SubProductPanel({
             );
 
             setSubProducts(response.data);
+
+            localStorage.setItem(
+                cacheKey,
+                JSON.stringify(response.data)
+            );
 
         } catch (error) {
 
