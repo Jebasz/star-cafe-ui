@@ -23,10 +23,9 @@ function CategoryPanel({ onCategorySelect, resetSignal }) {
     }, []);
 
     /* RESET HANDLER */
-    useEffect(() => {
-        setSelectedCategoryId(null);
-        setSearchKeyword("");
-    }, [resetSignal]);
+   useEffect(() => {
+    setSearchKeyword("");
+}, [resetSignal]);
 
     const loadCategories = async () => {
 
