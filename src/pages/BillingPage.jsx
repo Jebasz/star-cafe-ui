@@ -89,6 +89,37 @@ useEffect(() => {
 
 }, [cart, paymentType, pendingBillPayload, loading]);
 
+useEffect(() => {
+
+    const handleKeyPress = (e) => {
+
+        // Ignore when typing in inputs
+        const tag = document.activeElement.tagName;
+
+        if (tag === "INPUT" || tag === "TEXTAREA") {
+            return;
+        }
+
+        // ENTER → Print bill
+        if (e.key === "Enter") {
+
+            if (modal.type === "success" && pendingBillPayload) {
+                e.preventDefault();
+                handlePrint();
+            }
+
+        }
+
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+        window.removeEventListener("keydown", handleKeyPress);
+    };
+
+}, [modal, pendingBillPayload, loading]);
+
 const loadShopConfig = async () => {
 
     try {
