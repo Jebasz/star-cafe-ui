@@ -49,6 +49,46 @@ useEffect(() => {
     loadShopConfig();
 }, []);
 
+useEffect(() => {
+
+    const handleKeyPress = (e) => {
+
+        // prevent shortcuts when typing in input
+        if (
+            document.activeElement.tagName === "INPUT" ||
+            document.activeElement.tagName === "TEXTAREA"
+        ) {
+            return;
+        }
+
+        // F9 → Checkout
+        if (e.key === "F9") {
+            e.preventDefault();
+            checkout();
+        }
+
+        // F10 → Print Bill
+        if (e.key === "F10") {
+            e.preventDefault();
+            handlePrint();
+        }
+
+        // ESC → Close modal
+        if (e.key === "Escape") {
+            setModal({ ...modal, show: false });
+            setShowSplitPopup(false);
+        }
+
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+        window.removeEventListener("keydown", handleKeyPress);
+    };
+
+}, [cart, paymentType, pendingBillPayload, loading]);
+
 const loadShopConfig = async () => {
 
     try {
