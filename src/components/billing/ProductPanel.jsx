@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../../services/api";
-import { toggleFavourite } from "../../services/productService";
+import { toggleFavourite, getAllProductsForBilling  } from "../../services/productService";
 
 import { FaPlus, FaCoffee } from "react-icons/fa";
 
@@ -28,7 +28,7 @@ function ProductPanel({
             return JSON.parse(cached);
         }
 
-        const response = await API.get(`/products/shop/${shopId}/all`);
+        const response = await getAllProductsForBilling(shopId);
 
         localStorage.setItem(
             cacheKey,

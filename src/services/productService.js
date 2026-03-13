@@ -48,3 +48,7 @@ export const getProductsBySubProduct = (shopId, subProductId) => {
     });
 
 };
+
+export const getAllProductsForBilling = (shopId) => {
+    return API.get(`/products/shop/${shopId}/billing`);
+};
