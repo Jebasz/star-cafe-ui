@@ -12,7 +12,7 @@ import {
 
 import "../../styles/billing/category-panel.css";
 
-function CategoryPanel({ onCategorySelect, resetSignal }) {
+function CategoryPanel({ onCategorySelect }) {
 
     const [categories, setCategories] = useState([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -21,11 +21,6 @@ function CategoryPanel({ onCategorySelect, resetSignal }) {
     useEffect(() => {
         loadCategories();
     }, []);
-
-    /* RESET HANDLER */
-   useEffect(() => {
-    setSearchKeyword("");
-}, [resetSignal]);
 
     const loadCategories = async () => {
 
@@ -65,8 +60,12 @@ function CategoryPanel({ onCategorySelect, resetSignal }) {
                 key={id}
                 className={`category-btn ${isSelected ? "active" : ""}`}
                 onClick={() => {
+
                     setSelectedCategoryId(id);
+
+                    // clear search when clicking category
                     setSearchKeyword("");
+
                     onCategorySelect(categoryObj);
                 }}
             >
@@ -79,7 +78,6 @@ function CategoryPanel({ onCategorySelect, resetSignal }) {
         );
     };
 
-    /* CATEGORY ORDERING (UI ONLY) */
     const orderedCategories = [...categories].sort((a, b) => {
 
         const order = ["hot", "cold", "snack"];

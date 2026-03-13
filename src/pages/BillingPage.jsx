@@ -302,7 +302,6 @@ return (
                 <div className="col-2 billing-panel">
                     <CategoryPanel
                         onCategorySelect={handleCategorySelect}
-                        resetSignal={resetSignal}
                     />
                 </div>
 
