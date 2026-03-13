@@ -1,217 +1,149 @@
 import React, { useEffect, useState } from "react";
-import API from "../../services/api";
-import { toggleFavourite, getAllProductsForBilling  } from "../../services/productService";
+import { getCategories } from "../../services/categoryService";
 
-import { FaPlus, FaCoffee } from "react-icons/fa";
+import {
+    FaSnowflake,
+    FaMugHot,
+    FaCookieBite,
+    FaBoxOpen,
+    FaCoffee,
+    FaSearch
+} from "react-icons/fa";
 
-import "../../styles/billing/product-panel.css";
+import "../../styles/billing/category-panel.css";
 
-function ProductPanel({
-    shopId,
-    category,
-    price,
-    subProduct,
-    filterType,
-    onProductSelect
-}) {
+function CategoryPanel({ onCategorySelect, resetSignal }) {
 
-    const [products, setProducts] = useState([]);
-    const [favourites, setFavourites] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-    const getAllProducts = async () => {
-
-        const cacheKey = `allProducts_${shopId}`;
-        const cached = localStorage.getItem(cacheKey);
-
-        if (cached) {
-            return JSON.parse(cached);
-        }
-
-        const response = await getAllProductsForBilling(shopId);
-
-        localStorage.setItem(
-            cacheKey,
-            JSON.stringify(response.data)
-        );
-
-        return response.data;
-    };
+    const [categories, setCategories] = useState([]);
+    const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+    const [searchKeyword, setSearchKeyword] = useState("");
 
     useEffect(() => {
+        loadCategories();
+    }, []);
 
-        if (!category) {
-            setProducts([]);
+    // ⭐ reset when billing page signals
+    useEffect(() => {
+        setSelectedCategoryId(null);
+        setSearchKeyword("");
+    }, [resetSignal]);
+
+    const loadCategories = async () => {
+
+        const cachedCategories = localStorage.getItem("categories");
+
+        if (cachedCategories) {
+            setCategories(JSON.parse(cachedCategories));
             return;
         }
 
-        loadProducts();
-
-    }, [shopId, category, price, subProduct, filterType]);
-
-    const loadProducts = async () => {
-
-    try {
-
-        setLoading(true);
-
-        const allProducts = await getAllProducts();
-
-        let filtered = [...allProducts];
-
-        if (category?.id === "favourites") {
-
-            const fav = filtered.filter(p => p.favourite);
-            setFavourites(fav);
-            return;
-
-        }
-
-        if (category?.id === "search") {
-
-            const keyword =
-                category.keyword?.toLowerCase() || "";
-
-            filtered = filtered.filter(p =>
-                p.name.toLowerCase().includes(keyword)
-            );
-
-            setProducts(filtered);
-            return;
-
-        }
-
-        filtered = filtered.filter(p =>
-            Number(p.categoryId) === Number(category.id)
-        );
-
-        if (filterType === "SUB_PRODUCT" && subProduct) {
-
-            filtered = filtered.filter(p =>
-                Number(p.subProductId) === Number(subProduct.id)
-            );
-
-        }
-
-        if (filterType === "PRICE" && price) {
-
-            filtered = filtered.filter(p =>
-                p.price >= price.minPrice &&
-                p.price <= price.maxPrice
-            );
-
-        }
-
-        setProducts(filtered);
-
-    } catch (error) {
-
-        console.error("Product Load Error:", error);
-
-    } finally {
-
-        setLoading(false);
-
-    }
-
-};
-
-    const handleToggleFavourite = async (e, productId) => {
-
-        e.stopPropagation();
-
-        await toggleFavourite(productId);
-
-        const cacheKey = `allProducts_${shopId}`;
-        const cached = JSON.parse(localStorage.getItem(cacheKey)) || [];
-
-        const updated = cached.map(p =>
-            p.id === productId
-                ? { ...p, favourite: !p.favourite }
-                : p
-        );
+        const response = await getCategories();
+        setCategories(response.data);
 
         localStorage.setItem(
-            cacheKey,
-            JSON.stringify(updated)
+            "categories",
+            JSON.stringify(response.data)
         );
-
-        loadProducts();
-
     };
 
-    const renderCard = (product) => (
+    const getCategoryIcon = (name) => {
 
-        <div
-            key={product.id}
-            className="col-6 col-sm-4 col-md-3 col-lg-2"
-        >
+        const normalized = name?.toLowerCase() || "";
 
-            <div
-                className="product-card"
-                onClick={() => onProductSelect(product)}
+        if (normalized.includes("cold")) return <FaSnowflake />;
+        if (normalized.includes("hot")) return <FaMugHot />;
+        if (normalized.includes("snack")) return <FaCookieBite />;
+
+        return <FaBoxOpen />;
+    };
+
+    const renderButton = (id, label, icon, categoryObj = null) => {
+
+        const isSelected = selectedCategoryId === id;
+
+        return (
+            <button
+                key={id}
+                className={`category-btn ${isSelected ? "active" : ""}`}
+                onClick={() => {
+                    setSelectedCategoryId(id);
+                    setSearchKeyword("");
+                    onCategorySelect(categoryObj);
+                }}
             >
+                <span className="category-icon">
+                    {icon}
+                </span>
 
-                <img
-                    src={product.imageUrl || "https://via.placeholder.com/300"}
-                    alt={product.name}
-                    loading="lazy"
-                    className="product-image"
-                />
+                <span>{label}</span>
+            </button>
+        );
+    };
 
-                <div className="product-overlay" />
+    const orderedCategories = [...categories].sort((a, b) => {
 
-                <div className="product-name">
-                    {product.name}
-                </div>
+        const order = ["hot", "cold", "snack"];
 
-                <div className="product-price">
-                    ₹{product.price}
-                </div>
+        const getOrder = (name) => {
+            const index = order.findIndex(o =>
+                name?.toLowerCase().includes(o)
+            );
+            return index === -1 ? 99 : index;
+        };
 
-                <div className="product-add">
-                    <FaPlus size={9} />
-                </div>
-
-                <div
-                    className={`product-fav ${product.favourite ? "active" : ""}`}
-                    onClick={(e) => handleToggleFavourite(e, product.id)}
-                >
-                    <FaCoffee size={9} />
-                </div>
-
-            </div>
-
-        </div>
-
-    );
+        return getOrder(a.name) - getOrder(b.name);
+    });
 
     return (
+        <div className="category-panel">
 
-        <div className="product-panel">
+            <div className="category-search">
 
-            {loading && (
-                <div className="product-message">
-                    Loading products...
+                <div className="search-label">
+                    <FaSearch />
+                    <span>Search Product</span>
                 </div>
-            )}
 
-            {!loading && !category && (
-                <div className="product-message">
-                    Select a category
-                </div>
-            )}
+                <input
+                    type="text"
+                    placeholder="Search coffee..."
+                    value={searchKeyword}
+                    onChange={(e) => {
 
-            <div className="row g-3">
-                {category?.id === "favourites"
-                    ? favourites.map(renderCard)
-                    : products.map(renderCard)}
+                        const value = e.target.value;
+
+                        setSearchKeyword(value);
+                        setSelectedCategoryId("search");
+
+                        onCategorySelect({
+                            id: "search",
+                            keyword: value
+                        });
+
+                    }}
+                    className="search-input"
+                />
+
             </div>
 
+            {renderButton(
+                "favourites",
+                "Favourites",
+                <FaCoffee />,
+                { id: "favourites", name: "Favourites" }
+            )}
+
+            {orderedCategories.map(category =>
+                renderButton(
+                    category.id,
+                    category.name,
+                    getCategoryIcon(category.name),
+                    category
+                )
+            )}
+
         </div>
-
     );
-
 }
 
-export default ProductPanel;
+export default CategoryPanel;

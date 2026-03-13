@@ -22,6 +22,7 @@ const printRef = useRef();
 const [selectedCategory, setSelectedCategory] = useState(null);
 const [selectedPrice, setSelectedPrice] = useState(null);
 const [selectedSubProduct, setSelectedSubProduct] = useState(null);
+const [resetSignal, setResetSignal] = useState(0);
 
 const [filterType, setFilterType] = useState(null);
 
@@ -262,6 +263,7 @@ const handlePrint = async () => {
             setSelectedPrice(null);
             setSelectedSubProduct(null);
             setPendingBillPayload(null);
+            setResetSignal(prev => prev + 1);
 
             setModal({ ...modal, show: false });
 
@@ -296,8 +298,9 @@ return (
 
                 <div className="col-2 billing-panel">
                     <CategoryPanel
-                        onCategorySelect={handleCategorySelect}
-                    />
+    onCategorySelect={handleCategorySelect}
+    resetSignal={resetSignal}
+/>
                 </div>
 
                 <div className="col-7 billing-panel">
